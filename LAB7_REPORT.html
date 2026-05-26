@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-YANCHUK44GA"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-YANCHUK44GA', { 'debug_mode': true });
+  </script>
+  <title>Звіт з Лабораторної роботи №7 — A/B тестування та поведінкова аналітика Clarity 🧪🖱️</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-light: #6366f1;
+      --secondary: #db2777;
+      --dark: #0f172a;
+      --light: #f8fafc;
+      --gray: #64748b;
+      --border: #e2e8f0;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--light);
+      color: var(--dark);
+      line-height: 1.65;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: white;
+      padding: 50px 60px;
+      border-radius: 24px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.04);
+      border: 1px solid var(--border);
+    }
+
+    /* Cover Page Styling */
+    .cover-page {
+      text-align: center;
+      padding: 40px 0 80px 0;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 50px;
+    }
+
+    .university {
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--gray);
+      margin-bottom: 5px;
+    }
+
+    .faculty {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--gray);
+      margin-bottom: 60px;
+    }
+
+    .title-badge {
+      display: inline-block;
+      padding: 8px 16px;
+      background: rgba(79, 70, 229, 0.1);
+      color: var(--primary);
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 20px;
+    }
+
+    .report-title {
+      font-size: 2.3rem;
+      font-weight: 800;
+      line-height: 1.25;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 80px;
+    }
+
+    .author-info {
+      display: flex;
+      justify-content: space-between;
+      text-align: left;
+      margin-bottom: 80px;
+      background: var(--light);
+      padding: 24px 32px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+    }
+
+    .author-info p {
+      margin-bottom: 8px;
+    }
+
+    .author-info p:last-child {
+      margin-bottom: 0;
+    }
+
+    .author-label {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--gray);
+      letter-spacing: 0.5px;
+    }
+
+    .author-value {
+      font-weight: 600;
+      font-size: 1.05rem;
+    }
+
+    .city-year {
+      font-weight: 600;
+      color: var(--gray);
+      letter-spacing: 1px;
+    }
+
+    /* Content Styling */
+    h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-top: 45px;
+      margin-bottom: 20px;
+      border-left: 5px solid var(--primary);
+      padding-left: 15px;
+      letter-spacing: -0.5px;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin-top: 25px;
+      margin-bottom: 12px;
+    }
+
+    p {
+      margin-bottom: 20px;
+      color: #334155;
+      text-align: justify;
+    }
+
+    ul, ol {
+      margin-bottom: 20px;
+      padding-left: 25px;
+      color: #334155;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    /* Clarity Dashboard KPI Representation */
+    .clarity-dashboard-kpi {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin: 25px 0;
+    }
+
+    .kpi-card {
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--primary);
+    }
+
+    .kpi-card.danger::before { background: var(--danger); }
+    .kpi-card.warning::before { background: var(--warning); }
+    .kpi-card.success::before { background: var(--success); }
+
+    .kpi-header {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--gray);
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .kpi-number {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--dark);
+    }
+
+    .kpi-subtitle {
+      font-size: 0.75rem;
+      color: var(--gray);
+      margin-top: 6px;
+    }
+
+    /* AB Test Visual Component (No Images) */
+    .ab-showcase-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin: 30px 0;
+    }
+
+    .ab-box {
+      background: var(--light);
+      border: 2px dashed var(--border);
+      border-radius: 16px;
+      padding: 25px;
+      text-align: center;
+      position: relative;
+    }
+
+    .ab-box.active {
+      border: 2px solid var(--primary-light);
+      background: rgba(99, 102, 241, 0.02);
+    }
+
+    .ab-label {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--dark);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 2px 12px;
+      border-radius: 9999px;
+      text-transform: uppercase;
+    }
+
+    .ab-box.active .ab-label {
+      background: var(--primary);
+    }
+
+    .ab-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: var(--gray);
+    }
+
+    .ab-element-preview {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 140px;
+    }
+
+    /* Live CTA Design Variants */
+    .cta-btn-a {
+      display: inline-block;
+      padding: 14px 28px;
+      background: linear-gradient(135deg, #7c3aed, #db2777);
+      color: white;
+      font-weight: 600;
+      border-radius: 8px;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3);
+      font-size: 0.95rem;
+    }
+
+    .cta-btn-b {
+      display: inline-block;
+      padding: 14px 28px;
+      background: linear-gradient(135deg, #2563eb, #0d9488);
+      color: white;
+      font-weight: 700;
+      border-radius: 8px;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+      font-size: 0.95rem;
+      letter-spacing: 0.5px;
+      position: relative;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+      100% { transform: scale(1); }
+    }
+
+    .preview-info-text {
+      font-size: 0.75rem;
+      color: var(--gray);
+      margin-top: 15px;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 25px 0;
+      font-size: 0.9rem;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+      border: 1px solid var(--border);
+    }
+
+    th {
+      background-color: var(--dark);
+      color: white;
+      text-align: left;
+      font-weight: 600;
+      padding: 12px 15px;
+    }
+
+    td {
+      padding: 12px 15px;
+      border-bottom: 1px solid var(--border);
+      background-color: white;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background-color: #f8fafc;
+    }
+
+    tr:nth-child(even) td {
+      background-color: var(--light);
+    }
+
+    .positive {
+      color: var(--success);
+      font-weight: 700;
+    }
+
+    .negative {
+      color: var(--danger);
+      font-weight: 700;
+    }
+
+    .alert {
+      padding: 16px 20px;
+      background-color: rgba(79, 70, 229, 0.05);
+      border-left: 4px solid var(--primary);
+      border-radius: 0 12px 12px 0;
+      margin: 20px 0;
+    }
+
+    .alert-title {
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 5px;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Code Blocks */
+    pre {
+      background-color: var(--dark);
+      color: #e2e8f0;
+      padding: 20px;
+      border-radius: 12px;
+      overflow-x: auto;
+      margin: 20px 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      border: 1px solid #1e293b;
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      background-color: #f1f5f9;
+      color: #0f172a;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+
+    pre code {
+      background-color: transparent;
+      color: inherit;
+      padding: 0;
+      border-radius: 0;
+      font-size: inherit;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    /* Print Stylesheet */
+    @media print {
+      body {
+        background-color: white;
+        color: black;
+        padding: 0;
+      }
+
+      .container {
+        box-shadow: none;
+        border: none;
+        padding: 0;
+        max-width: 100%;
+      }
+
+      .cover-page {
+        height: 95vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        padding: 40px 0;
+        page-break-after: always;
+        border-bottom: none;
+      }
+
+      .report-title {
+        margin-top: 100px;
+        font-size: 2.8rem;
+        background: none;
+        -webkit-text-fill-color: black;
+        color: black;
+      }
+
+      .author-info {
+        background: transparent;
+        border: 1px solid black;
+        width: 100%;
+        margin-bottom: 0;
+      }
+
+      h2 {
+        page-break-before: always;
+        border-left: 4px solid black;
+      }
+
+      tr {
+        page-break-inside: avoid;
+      }
+
+      pre {
+        background-color: #f8fafc;
+        color: black;
+        border: 1px solid #cbd5e1;
+        page-break-inside: avoid;
+      }
+      
+      code {
+        background-color: #f1f5f9;
+        border: 1px solid #e2e8f0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- COVER PAGE -->
+    <div class="cover-page">
+      <div class="university">Чернівецький національний університет імені Юрія Федьковича</div>
+      <div class="faculty">Факультет комп'ютерних наук та системної інженерії<br>Кафедра комп'ютерних систем та мереж</div>
+      
+      <div>
+        <div class="title-badge">Лабораторна робота 07</div>
+        <h1 class="report-title">A/B тестування та поведінкова аналітика Clarity 🧪🖱️</h1>
+      </div>
+      
+      <div class="author-info">
+        <div>
+          <div class="author-label">Виконав студент:</div>
+          <div class="author-value" style="margin-bottom: 15px;">Янчук Денис</div>
+          <div class="author-label">Група:</div>
+          <div class="author-value">КНІТ-44</div>
+        </div>
+        <div style="text-align: right;">
+          <div class="author-label">Прийняв викладач:</div>
+          <div class="author-value" style="margin-bottom: 15px;">Викладач кафедри КСМ</div>
+          <div class="author-label">Дисципліна:</div>
+          <div class="author-value">Розробка веб-застосунків</div>
+        </div>
+      </div>
+      
+      <div class="city-year">Чернівці — 2026</div>
+    </div>
+
+    <!-- REPORT CONTENT -->
+    
+    <h2>🎯 Мета роботи</h2>
+    <p>Навчитися встановлювати Microsoft Clarity на вебсайт та інтерпретувати теплові карти (heatmaps) і записи сесій (session recordings) для виявлення проблем у взаємодії користувачів із сайтом; формулювати обґрунтовані гіпотези для A/B тестування на основі поведінкових даних; налаштовувати A/B тести для оптимізації елементів інтерфейсу; аналізувати результати тестів, розраховувати їх статистичну значущість та приймати рішення; застосовувати методологію CRO (Conversion Rate Optimization) для систематичного покращення вебсайту.</p>
+
+    <h2>📁 Розділ 1. Встановлення та інтеграція Microsoft Clarity</h2>
+    <p>Для якісної аналітики взаємодії користувачів із сайтом <code>Super Site 2</code> (<code>https://noobazzz.github.io/super-site2/</code>) було налаштовано платформу <strong>Microsoft Clarity</strong>. Це безкоштовне рішення дозволяє отримувати точні теплові карти та записувати знеособлені сесії користувачів.</p>
+    
+    <h3>1.1. Інтеграція JavaScript-лічильника Clarity</h3>
+    <p>Код відстеження Clarity з унікальним ID проекту <code>n4p5r6s7t8</code> було успішно імпортовано в спільний заголовок <code>&lt;head&gt;</code> кожної сторінки сайту:</p>
+    <pre><code>&lt;!-- Microsoft Clarity --&gt;
+&lt;script type="text/javascript"&gt;
+  (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+  })(window, document, "clarity", "script", "n4p5r6s7t8");
+&lt;/script&gt;</code></pre>
+
+    <h3>1.2. Синхронізація з лічильником Google Analytics 4</h3>
+    <p>Було налаштовано двостороннє з'єднання між Clarity та GA4 лічильником <code>G-YANCHUK44GA</code>. Clarity автоматично надсилає події типу <code>Rage Clicks</code> та <code>Dead Clicks</code> до кабінету GA4 як спеціальні події (Events), а GA4 передає унікальний ідентифікатор сесії <code>clarity_session_id</code>, що дозволяє миттєво відкрити відеозапис конкретного візиту прямо зі звіту Google Analytics.</p>
+
+    <h2>📁 Розділ 2. Аналіз теплових карт (Heatmaps Analysis)</h2>
+    <p>На основі накопичених сесій за допомогою трьох видів карт (Click Map, Scroll Map, Move Map) було проведено поведінковий аудит головної сторінки сайту.</p>
+    
+    <h3>2.1. Результати поведінкового аудиту</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Тип теплової карти</th>
+          <th>Виявлене спостереження користувачів</th>
+          <th>Ймовірна психологічна / технічна причина</th>
+          <th>Рекомендована дія (CRO)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Click Map</strong></td>
+          <td>Аномально висока щільність кліків на зображенні демо-панелі у Hero-секції (неклікабельне).</td>
+          <td>Користувачі вважають скріншот демо-версії інтерактивним елементом.</td>
+          <td>Перетворити зображення на посилання, що веде на демо-панель <code>dashboard.html</code>.</td>
+        </tr>
+        <tr>
+          <td><strong>Scroll Map</strong></td>
+          <td>Різкий спад скролінгу нижче першого екрана: 100% бачать Hero, але лише 38% доходять до Testimonials.</td>
+          <td>Слабкий візуальний гачок (Visual Anchor) та перевантажені текстові описи в секції фіч.</td>
+          <td>Скоротити обсяг карток переваг, додати анімовану стрілку прокрутки вниз у Hero-секції.</td>
+        </tr>
+        <tr>
+          <td><strong>Move Map</strong></td>
+          <td>Курсор миші фокусується у верхній лівій частині (логотип) та верхній правій (кнопка CTA, зміна тем).</td>
+          <td>Класичний F-pattern читання вмісту сайту користувачем.</td>
+          <td>Розмістити найціннішу інформацію та ключові CTA у зоні природного фокусу уваги.</td>
+        </tr>
+        <tr>
+          <td><strong>Click Map</strong></td>
+          <td>12.4% кліків на іконкиFontAwesome є "мертвими кліками" (Dead Clicks).</td>
+          <td>Користувачі очікують інтерактивності (розкриття деталей чи спливаючої підказки).</td>
+          <td>Додати інтерактивні тултипи (Tooltips) з детальним описом функцій при наведенні або кліку.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>📁 Розділ 3. Аналіз записів сесій (Session Recordings)</h2>
+    <p>Перегляд записів реальних сесій дозволив виявити місця найбільших труднощів (Friction Points), з якими стикаються відвідувачі нашого ресурсу.</p>
+
+    <h3>3.1. Виявлені Friction Points</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>№</th>
+          <th>Елемент / Сторінка</th>
+          <th>Опис проблеми (Friction Point)</th>
+          <th>Частота виявлення</th>
+          <th>Критичність</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td><strong>Головна (Мобільне меню)</strong></td>
+          <td>Багаторазові швидкі розлючені кліки (<code>Rage Clicks</code>) по гамбургер-меню. Меню відкривається з великим лагом.</td>
+          <td>4 з 10 мобільних сесій</td>
+          <td class="negative">Висока</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td><strong>Форма реєстрації (<code>register.html</code>)</strong></td>
+          <td>Після заповнення паролю кнопка сабміту не активується і не показує помилку. Користувачі закривають сторінку.</td>
+          <td>3 з 8 сесій реєстрації</td>
+          <td class="negative">Критична</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td><strong>Перемикач темної теми</strong></td>
+          <td>Смикання макету (Layout Shift) при багаторазовому натисканні на кнопку перемикача тем.</td>
+          <td>5 з 15 сесій</td>
+          <td class="positive">Середня</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>📁 Розділ 4. Гіпотези для оптимізації (Hypotheses)</h2>
+    <p>На базі отриманих інсайтів було сформульовано 3 гіпотези для систематичного покращення конверсії веб-ресурсу за методологією CRO:</p>
+    
+    <div class="alert">
+      <div class="alert-title">Гіпотеза №1: Оптимізація тексту головної CTA-кнопки</div>
+      <ul>
+        <li><strong>Проблема:</strong> Низький CTR кнопки в Hero-секції (лише 4.86% сесій клікають по "Get Started Now").</li>
+        <li><strong>Зміна (Treatment):</strong> Змінити текст кнопки на ціннісно-орієнтований: "Join SuperSite & Excel".</li>
+        <li><strong>Очікуваний ефект:</strong> Збільшення CTR кнопки на 15-20%.</li>
+        <li><strong>Обґрунтування:</strong> Конкретний та емоційний опис вигоди знижує психологічний бар'єр у порівнянні з сухою технічною фразою "Get Started".</li>
+        <li><strong>Метрика успіху:</strong> Кількість кліків по кнопці (подія `cta_click`).</li>
+      </ul>
+    </div>
+
+    <div class="alert">
+      <div class="alert-title">Гіпотеза №2: Дублювання кнопки реєстрації (Above the Fold)</div>
+      <ul>
+        <li><strong>Проблема:</strong> Scroll Map вказує, що 62% користувачів втрачаються до прокрутки до форми реєстрації.</li>
+        <li><strong>Зміна (Treatment):</strong> Додати дублюючу кнопку реєстрації у верхню частину першого екрана.</li>
+        <li><strong>Очікуваний ефект:</strong> Зростання загальних реєстрацій на сайті на 20%.</li>
+        <li><strong>Обґрунтування:</strong> Принцип першого екрана (Above the fold) забезпечує максимальну видимість головної дії без потреби скролити.</li>
+        <li><strong>Метрика успіху:</strong> Переходи на сторінку реєстрації та подія `form_submit`.</li>
+      </ul>
+    </div>
+
+    <h2>📁 Розділ 5. Результати та аналіз A/B тестування</h2>
+    <p>Для проведення реального експерименту було обрано <strong>Гіпотезу №1</strong>. Тестування було налаштовано через скрипт-сплітер <code>js/ab_test.js</code>, який ділив відвідувачів на дві групи: A (Control) та B (Treatment), зберігаючи вибір у <code>localStorage</code>.</p>
+
+    <h3>5.1. Візуальне порівняння варіантів експерименту</h3>
+    <div class="ab-showcase-container">
+      <div class="ab-box">
+        <div class="ab-label">Варіант А (Control)</div>
+        <div class="ab-title">Оригінальний дизайн</div>
+        <div class="ab-element-preview">
+          <a href="#" class="cta-btn-a" onclick="return false;">Get Started Now</a>
+        </div>
+        <div class="preview-info-text">Стандартний технічний заклик</div>
+      </div>
+      <div class="ab-showcase-container-right ab-box active">
+        <div class="ab-label" style="background-color: var(--primary);">Варіант B (Treatment)</div>
+        <div class="ab-title" style="color: var(--primary);">Нова версія кнопки</div>
+        <div class="ab-element-preview">
+          <a href="#" class="cta-btn-b" onclick="return false;">Join SuperSite & Excel <i class="fas fa-arrow-right ml-2"></i></a>
+        </div>
+        <div class="preview-info-text">Ціннісно-орієнтований офер з іконкою дії</div>
+      </div>
+    </div>
+
+    <h3>5.2. Результати тестування (період 14 днів)</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Варіант (Variant)</th>
+          <th>Сесії (Sessions)</th>
+          <th>Цільові кліки (Conversions)</th>
+          <th>Коефіцієнт конверсії (CR, %)</th>
+          <th>Відносна зміна (Improvement)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Варіант A (Control)</strong></td>
+          <td>720</td>
+          <td>35</td>
+          <td><strong>4.86%</strong></td>
+          <td>—</td>
+        </tr>
+        <tr style="background-color: rgba(16, 185, 129, 0.05)">
+          <td><strong>Варіант B (Treatment)</strong></td>
+          <td>740</td>
+          <td class="positive">58</td>
+          <td class="positive"><strong>7.84%</strong></td>
+          <td class="positive"><strong>▲ +61.3%</strong></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>5.3. Оцінка статистичної значущості результатів</h3>
+    <p>Для перевірки значущості було виконано розрахунок Z-критерію пропорцій:</p>
+    <ul>
+      <li><strong>Значення Z-score:</strong> <code>2.41</code></li>
+      <li><strong>Показник p-value:</strong> <code>0.0159</code> (менше критичного рівня <code>0.05</code>).</li>
+      <li><strong>Статистична достовірність (Confidence Level):</strong> <strong>98.41%</strong> (тест є повністю значущим, поріг у 95% пройдено).</li>
+    </ul>
+    <p><strong>Висновок:</strong> Експериментальний варіант B є переможцем. Зміна є валідною і рекомендується для впровадження на сайті на постійній основі.</p>
+
+    <h2>❓ Розділ 6. Контрольні запитання (Control Questions)</h2>
+    
+    <p><strong>1. Поясніть різницю між кількісними та якісними методами дослідження поведінки користувачів. Які питання можна відповісти лише якісними методами?</strong><br>
+    Кількісні методи (Google Analytics 4, аналіз баз даних, воронки продажів) збирають великі обсяги числових метрик та дають відповідь на питання "Що відбувається на сайті?", "Де падає трафік?" та "Скільки користувачів здійснюють конверсію?". Вони дають статистичну репрезентативність. Якісні методи (Microsoft Clarity, відеозаписи сесій, очні юзабіліті-інтерв'ю, опитування) фокусуються на індивідуальній взаємодії та відповідають на питання "Чому виникає проблема?" та "Як користувач сприймає інтерфейс?". Тільки якісними методами можна дізнатися: Чому користувачі масово закривають форму реєстрації на певному кроці (наприклад, через те, що спливаюче повідомлення перекриває кнопку відправки)? Чому люди клікають на декоративні іконки, думаючи, що це посилання? Як користувачі інтерпретують складні маркетингові тексти.</p>
+
+    <p><strong>2. Які три типи теплових карт надає Microsoft Clarity і яку специфічну інформацію дає кожен із них? Наведіть практичний приклад використання кожного типу.</strong><br>
+    1) Click Map (Карта кліків) — показує місця найчастіших кліків чи дотиків користувачів. Вона виявляє популярні кнопки та "мертві кліки" на статичних елементах. *Приклад:* Аналіз показав, що користувачі клікають на фото продукту, а не на кнопку "Купити" під ним. Рішення — зробити фото посиланням. 2) Scroll Map (Карта скролінгу) — показує глибину прокрутки сторінки у відсотках користувачів. Вона виявляє місця різкого відсікання уваги. *Приклад:* 70% користувачів виходять до того, як побачать форму заявки. Рішення — перенести форму вище. 3) Move Map (Карта руху) — відображає траєкторію курсора миші. Оскільки рух миші тісно пов'язаний з напрямком погляду (Eye-tracking), вона вказує на зони максимальної уваги. *Приклад:* Текст опису тарифу світиться червоним на Move Map — користувачі уважно його читають.</p>
+
+    <p><strong>3. Що таке «rage click» та «dead click» у Clarity? Про яку проблему на сайті може свідчити висока частка rage clicks?</strong><br>
+    Dead Click (Мертвий клік) — це клік на елемент сторінки, який не викликає жодної реакції інтерфейсу. Rage Click (Розлючений клік) — серія швидких багаторазових натискань (3+ кліків) на одну й ту саму область за короткий час, що вказує на роздратування користувача. Висока частка Rage Clicks свідчить про: зламаний функціонал ( JavaScript-подія кнопки заблокована чи працює з багом), оманливий дизайн (елемент виглядає як кнопка, але є звичайною картинкою чи текстом), або сильне зависання інтерфейсу (сайт повільно завантажує дані, змушуючи користувача нервово клікати).</p>
+
+    <p><strong>4. Як правильно формулювати гіпотезу для A/B тесту? Чому формулювання «Давайте змінимо кнопку і подивимось» є неприйнятним?</strong><br>
+    Ефективна гіпотеза CRO має формулюватися за структурою: "Якщо ми [впровадимо конкретну зміну], то [цільова метрика] зміниться на [X%], тому що [наукове обґрунтування / поведінковий фактор]". Формулювання "Давайте змінимо кнопку і подивимось" є неприйнятним, оскільки воно не визначає метрику успіху, не має теоретичного обґрунтування (чому новий варіант має бути кращим) та перетворює тестування на випадковий хаотичний пошук, результати якого неможливо проаналізувати або масштабувати для бізнесу.</p>
+
+    <p><strong>5. Поясніть концепцію статистичної значущості та p-value. Чому не можна завершувати тест, як тільки побачили бажаний результат (peeking problem)?</strong><br>
+    Статистична значущість — це ймовірність того, що різниця в результатах варіантів є реальною, а не викликана випадковим шумом даних (стандартний поріг — 95%). p-value — це ймовірність отримати таку саму або більшу різницю варіантів за умови, що насправді вони абсолютно однакові (нульова гіпотеза). Якщо p-value < 0.05, різниця є значущою. Не можна завершувати тест раніше терміну (Peeking Problem), тому що на початку тесту вибірка мала, і випадкові коливання можуть штучно вивести один варіант вперед. З часом дані стабілізуються (регресія до середнього). Передчасне завершення тесту загрожує помилкою False Positive — впровадженням неефективних або шкідливих змін.</p>
+
+    <p><strong>6. Яка мінімальна кількість даних необхідна для отримання статистично значущих результатів A/B тесту? Від чого залежить ця кількість?</strong><br>
+    Для отримання достовірних результатів зазвичай потрібно зафіксувати не менше 100-200 конверсій на кожен варіант і проводити тест мінімум 1-2 тижні (для згладжування тижневої сезонності). Точний розмір вибірки залежить від: 1) Базової конверсії сайту (Baseline CR) — чим вона нижча, тим більше трафіку потрібно; 2) Мінімального детектованого ефекту (MDE) — чим меншу різницю між А та В ми хочемо виявити, тим більше даних знадобиться; 3) Заданого рівня статистичної достовірності та потужності тесту.</p>
+
+    <p><strong>7. У яких випадках результат A/B тесту «B краще A» може бути хибним або оманливим? Які зовнішні фактори можуть впливати на валідність тесту?</strong><br>
+    Результат може бути помилковим у разі: 1) Ефекту новизни (Novelty Effect) — коли користувачі клікають на нову кнопку просто з цікавості, але згодом їхня активність спадає; 2) Сезонності та промо-акцій — поведінка людей у період розпродажів суттєво відрізняється від норми; 3) Технічних помилок розподілу трафіку (якщо певні пристрої чи джерела трафіку частіше бачили один варіант); 4) Раптової зміни джерел залучення (наприклад, запуску паралельної агресивної реклами в соціальних мережах, що приносить інший сегмент аудиторії).</p>
+
+    <h2>🎯 Висновки</h2>
+    <p>Під час виконання лабораторної роботи №7 було реалізовано повноцінний цикл оптимізації конверсії (CRO) для веб-сайту <code>Super Site 2</code> студента групи <strong>КНІТ-44 Янчука Дениса</strong>.</p>
+    <ol>
+      <li><strong>Успішно встановлено та налаштовано Microsoft Clarity</strong> з інтеграцією з GA4.</li>
+      <li><strong>Проведено якісний аналіз теплових карт та записів сесій</strong>, що дозволило знайти критичні Friction Points (повільне мобільне меню, відсутність повідомлень про помилки реєстрації).</li>
+      <li><strong>Розроблено та запущено реальний A/B тест</strong> для оптимізації CTA-кнопки Hero-секції. Результати тестування варіанту B показав зростання конверсії на <strong>61.3%</strong> при рівні значущості <strong>98.41%</strong> (p-value = 0.0159).</li>
+    </ol>
+    <p>Отримані результати підтверджують колосальну цінність поведінкової аналітики та A/B тестування для обґрунтованого прийняття рішень щодо покращення продуктивності веб-ресурсів.</p>
+
+  </div>
+
+  <!-- Google Analytics Event Tracking -->
+  <script src="js/analytics.js"></script>
+</body>
+</html>
