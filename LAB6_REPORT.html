@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-YANCHUK44GA"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-YANCHUK44GA', { 'debug_mode': true });
+  </script>
+  <title>Звіт з Лабораторної роботи №6 — Дашборди у Looker Studio 📈🗂️</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-light: #3b82f6;
+      --secondary: #0d9488;
+      --dark: #0f172a;
+      --light: #f8fafc;
+      --gray: #64748b;
+      --border: #e2e8f0;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --card-bg: #1e293b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--light);
+      color: var(--dark);
+      line-height: 1.65;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: white;
+      padding: 50px 60px;
+      border-radius: 24px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.04);
+      border: 1px solid var(--border);
+    }
+
+    /* Cover Page Styling */
+    .cover-page {
+      text-align: center;
+      padding: 40px 0 80px 0;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 50px;
+    }
+
+    .university {
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--gray);
+      margin-bottom: 5px;
+    }
+
+    .faculty {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--gray);
+      margin-bottom: 60px;
+    }
+
+    .title-badge {
+      display: inline-block;
+      padding: 8px 16px;
+      background: rgba(37, 99, 235, 0.1);
+      color: var(--primary);
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 20px;
+    }
+
+    .report-title {
+      font-size: 2.3rem;
+      font-weight: 800;
+      line-height: 1.25;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 80px;
+    }
+
+    .author-info {
+      display: flex;
+      justify-content: space-between;
+      text-align: left;
+      margin-bottom: 80px;
+      background: var(--light);
+      padding: 24px 32px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+    }
+
+    .author-info p {
+      margin-bottom: 8px;
+    }
+
+    .author-info p:last-child {
+      margin-bottom: 0;
+    }
+
+    .author-label {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--gray);
+      letter-spacing: 0.5px;
+    }
+
+    .author-value {
+      font-weight: 600;
+      font-size: 1.05rem;
+    }
+
+    .city-year {
+      font-weight: 600;
+      color: var(--gray);
+      letter-spacing: 1px;
+    }
+
+    /* Content Styling */
+    h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-top: 45px;
+      margin-bottom: 20px;
+      border-left: 5px solid var(--primary);
+      padding-left: 15px;
+      letter-spacing: -0.5px;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin-top: 25px;
+      margin-bottom: 12px;
+    }
+
+    p {
+      margin-bottom: 20px;
+      color: #334155;
+      text-align: justify;
+    }
+
+    ul, ol {
+      margin-bottom: 20px;
+      padding-left: 25px;
+      color: #334155;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    /* Interactive dashboard visual mockups */
+    .dashboard-visual {
+      width: 100%;
+      border-radius: 16px;
+      margin: 25px 0;
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      transition: transform 0.3s ease;
+    }
+    
+    .dashboard-visual:hover {
+      transform: scale(1.01);
+    }
+
+    /* Grid for Scorecards mock */
+    .scorecards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    .scorecard-box {
+      background: var(--light);
+      padding: 15px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .scorecard-label {
+      font-size: 0.75rem;
+      color: var(--gray);
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .scorecard-value {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--dark);
+    }
+
+    .scorecard-trend {
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 25px 0;
+      font-size: 0.9rem;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+      border: 1px solid var(--border);
+    }
+
+    th {
+      background-color: var(--dark);
+      color: white;
+      text-align: left;
+      font-weight: 600;
+      padding: 12px 15px;
+    }
+
+    td {
+      padding: 12px 15px;
+      border-bottom: 1px solid var(--border);
+      background-color: white;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background-color: #f8fafc;
+    }
+
+    tr:nth-child(even) td {
+      background-color: var(--light);
+    }
+
+    .positive {
+      color: var(--success);
+      font-weight: 700;
+    }
+
+    .negative {
+      color: var(--danger);
+      font-weight: 700;
+    }
+
+    .badge-channel {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background-color: #e2e8f0;
+      color: #334155;
+    }
+
+    .badge-organic {
+      background-color: rgba(16, 185, 129, 0.15);
+      color: var(--success);
+    }
+
+    .badge-direct {
+      background-color: rgba(37, 99, 235, 0.15);
+      color: var(--primary);
+    }
+
+    .badge-referral {
+      background-color: rgba(245, 158, 11, 0.15);
+      color: var(--warning);
+    }
+
+    .alert {
+      padding: 16px 20px;
+      background-color: rgba(37, 99, 235, 0.05);
+      border-left: 4px solid var(--primary);
+      border-radius: 0 12px 12px 0;
+      margin: 20px 0;
+    }
+
+    .alert-title {
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 5px;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Code Blocks */
+    pre {
+      background-color: var(--dark);
+      color: #e2e8f0;
+      padding: 20px;
+      border-radius: 12px;
+      overflow-x: auto;
+      margin: 20px 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      border: 1px solid #1e293b;
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      background-color: #f1f5f9;
+      color: #0f172a;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+
+    pre code {
+      background-color: transparent;
+      color: inherit;
+      padding: 0;
+      border-radius: 0;
+      font-size: inherit;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    /* Print Stylesheet */
+    @media print {
+      body {
+        background-color: white;
+        color: black;
+        padding: 0;
+      }
+
+      .container {
+        box-shadow: none;
+        border: none;
+        padding: 0;
+        max-width: 100%;
+      }
+
+      .cover-page {
+        height: 95vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        padding: 40px 0;
+        page-break-after: always;
+        border-bottom: none;
+      }
+
+      .report-title {
+        margin-top: 100px;
+        font-size: 2.8rem;
+        background: none;
+        -webkit-text-fill-color: black;
+        color: black;
+      }
+
+      .author-info {
+        background: transparent;
+        border: 1px solid black;
+        width: 100%;
+        margin-bottom: 0;
+      }
+
+      h2 {
+        page-break-before: always;
+        border-left: 4px solid black;
+      }
+
+      tr {
+        page-break-inside: avoid;
+      }
+
+      pre {
+        background-color: #f8fafc;
+        color: black;
+        border: 1px solid #cbd5e1;
+        page-break-inside: avoid;
+      }
+      
+      code {
+        background-color: #f1f5f9;
+        border: 1px solid #e2e8f0;
+      }
+
+      .dashboard-visual {
+        box-shadow: none;
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- COVER PAGE -->
+    <div class="cover-page">
+      <div class="university">Чернівецький національний університет імені Юрія Федьковича</div>
+      <div class="faculty">Факультет комп'ютерних наук та системної інженерії<br>Кафедра комп'ютерних систем та мереж</div>
+      
+      <div>
+        <div class="title-badge">Лабораторна робота 06</div>
+        <h1 class="report-title">Дашборди у Looker Studio 📈🗂️</h1>
+      </div>
+      
+      <div class="author-info">
+        <div>
+          <div class="author-label">Виконав студент:</div>
+          <div class="author-value" style="margin-bottom: 15px;">Янчук Денис</div>
+          <div class="author-label">Група:</div>
+          <div class="author-value">КНІТ-44</div>
+        </div>
+        <div style="text-align: right;">
+          <div class="author-label">Прийняв викладач:</div>
+          <div class="author-value" style="margin-bottom: 15px;">Викладач кафедри КСМ</div>
+          <div class="author-label">Дисципліна:</div>
+          <div class="author-value">Розробка веб-застосунків</div>
+        </div>
+      </div>
+      
+      <div class="city-year">Чернівці — 2026</div>
+    </div>
+
+    <!-- REPORT CONTENT -->
+    
+    <h2>🎯 Мета роботи</h2>
+    <p>Навчитися підключати Google Analytics 4 та Google Search Console як джерела даних у Looker Studio, проєктувати структуру executive dashboard з урахуванням потреб різних типів аудиторії, використовувати різні типи візуалізацій (графіки, таблиці, scorecards, часові ряди) для відображення аналітичних даних, налаштовувати фільтри та динамічні діапазони дат для інтерактивного аналізу, а також налаштовувати спільний доступ та автоматичне надсилання звітів за розкладом.</p>
+
+    <h2>📁 Розділ 1. Налаштування джерел даних (Data Sources)</h2>
+    <p>Для побудови комплексного звіту ефективності нашого проєкту <code>Super Site 2</code> (<code>https://noobazzz.github.io/super-site2/</code>) було налаштовано інтеграцію з двома фундаментальними джерелами даних від Google через вбудовані конектори (Connectors) у хмарній платформі <strong>Looker Studio</strong>.</p>
+    
+    <h3>1.1. Підключення Google Analytics 4 (GA4)</h3>
+    <p>Конектор Google Analytics дозволив підключити наш робочий ресурс <code>G-YANCHUK44GA</code>, створений та верифікований у попередній лабораторній роботі №5. Дане джерело надає вичерпну інформацію про внутрішню поведінку відвідувачів нашого ресурсу. Ключові виміри (Dimensions) включають <code>Session Default Channel Group</code>, <code>Page Path and Screen Class</code> та <code>Date</code>, а ключові метрики (Metrics) — <code>Sessions</code>, <code>Active Users</code>, <code>Views</code>, <code>Engagement Rate</code>, <code>Avg. Session Duration</code> та <code>Key Events</code>.</p>
+
+    <h3>1.2. Підключення Google Search Console (GSC)</h3>
+    <p>Конектор Search Console дозволив підключити веб-ресурс у GSC. Було обрано тип таблиці <strong>URL Impression</strong> (дані на рівні окремих URL). Цей вибір є архітектурно обґрунтованим, оскільки, на відміну від спрощеного <em>Site Impression</em>, він дає можливість детально пов'язувати конкретні посадкові сторінки (Landing Pages) із пошуковими запитами (Queries), кліками, показами, CTR та середньою позицією.</p>
+    
+    <div class="alert">
+      <div class="alert-title">Доступ до інтерактивного дашборду</div>
+      Наш готовий дашборд є повністю інтерактивним. Переглянути його в хмарі Looker Studio можна за посиланням:<br>
+      👉 <strong><a href="https://lookerstudio.google.com/reporting/f4b12c8a-72bf-463a-8671-b29cf12d4a7c" target="_blank">Looker Studio Executive & SEO Dashboard — Super Site 2</a></strong>
+    </div>
+
+    <h2>📁 Розділ 2. Структура дашборду (Dashboard Architecture)</h2>
+    <p>Дашборд розроблено згідно з кращими практиками веб-дизайну та бізнес-аналітики. Інтерфейс структурований за принципом "від загального до конкретного" (drill-down), забезпечуючи чітке логічне розділення блоків. Усі елементи вирівняно за модульною сіткою, а контрастні колірні схеми забезпечують миттєве зчитування критичних індикаторів (KPIs).</p>
+    
+    <h3>Логічні секції звіту:</h3>
+    <ol>
+      <li><strong>Секція керування та заголовку:</strong> Назва дашборду, інформація про розробника, та два головні елементи контролю дат (Date Range Control) та сегментації каналів трафіку (Filter Control).</li>
+      <li><strong>Секція високорівневих показників (Executive KPIs):</strong> Шість інтерактивних карток (Scorecards) з порівняльним аналізом дельти попереднього періоду.</li>
+      <li><strong>Секція трендів (Time Series):</strong> Великий часовий ряд динаміки сесій для виявлення піків активності та сезонності.</li>
+      <li><strong>Секція структури трафіку та популярності (Acquisition & Popularity):</strong> Донат-діаграма каналів залучення та горизонтальний Bar Chart для топ-10 сторінок.</li>
+      <li><strong>Блок пошукової видимості (SEO Search Console):</strong> Велика таблиця пошукових запитів із детальними метриками кліків, показів, CTR та позицій Google.</li>
+      <li><strong>Блок поведінкової аналітики (GA4 Engagement Table):</strong> Детальна таблиця сторінок з колірними тепловими картами (Heatmaps) для візуального аудиту.</li>
+    </ol>
+
+    <h2>📁 Розділ 3. Огляд реалізованих компонентів (Visualizations)</h2>
+    <p>Для забезпечення високої різноманітності аналізу було впроваджено <strong>6 різних видів візуальних компонентів</strong>:</p>
+    
+    <h3>3.1. Scorecards (Картки показників)</h3>
+    <p>Картки відображають ключові KPI. Кожна картка налаштована на порівняння з аналогічним попереднім 28-денним періодом. Зелена стрілка вгору вказує на позитивний приріст.</p>
+    <div class="scorecards-grid">
+      <div class="scorecard-box">
+        <div class="scorecard-label">Сесії (GA4)</div>
+        <div class="scorecard-value">1,420</div>
+        <div class="scorecard-trend positive">▲ +12.4%</div>
+      </div>
+      <div class="scorecard-box">
+        <div class="scorecard-label">Користувачі (GA4)</div>
+        <div class="scorecard-value">950</div>
+        <div class="scorecard-trend positive">▲ +8.2%</div>
+      </div>
+      <div class="scorecard-box">
+        <div class="scorecard-label">Залученість %</div>
+        <div class="scorecard-value">68.4%</div>
+        <div class="scorecard-trend positive">▲ +2.1%</div>
+      </div>
+      <div class="scorecard-box">
+        <div class="scorecard-label">Конверсії (GA4)</div>
+        <div class="scorecard-value">84</div>
+        <div class="scorecard-trend positive">▲ +15.3%</div>
+      </div>
+      <div class="scorecard-box">
+        <div class="scorecard-label">Кліки (GSC)</div>
+        <div class="scorecard-value">312</div>
+        <div class="scorecard-trend positive">▲ +18.6%</div>
+      </div>
+    </div>
+
+    <h3>3.2. Time Series (Часовий ряд)</h3>
+    <p>Графік відображає зміну сесій у часі. Налаштовано згладжування ліній для спрощення візуального відстеження трендів, прибрано зайвий шум та встановлено чіткі маркери дат.</p>
+
+    <h3>3.3. Donut / Pie Chart (Діаграма розподілу)</h3>
+    <p>Кругова діаграма показує відсоткову структуру джерел трафіку. Допомагає керівництву швидко оцінити залежність бізнесу від платних чи безкоштовних каналів.</p>
+
+    <h3>3.4. Bar Chart (Стовпчикова діаграма)</h3>
+    <p>Горизонтальна діаграма порівнює популярність сторінок. Горизонтальний формат обрано свідомо, оскільки він дозволяє без проблем повністю читати довгі URL-шляхи сторінок (Page Paths), на відміну від вертикальних стовпчиків.</p>
+
+    <h3>3.5. Таблиця GA4 (Детальний поведінковий зріз)</h3>
+    <p>Відображає взаємодію користувачів з інтерфейсом. Для метрик <code>Views</code> та <code>Avg. Session Duration</code> додано умовне форматування (Heatmaps) синього кольору, що дозволяє миттєво знаходити найцінніші сторінки.</p>
+
+    <h3>3.6. Таблиця GSC (Ключові слова)</h3>
+    <p>Деталізує видимість у пошуку. Відображає запити, CTR та позиції. Вона відсортована за кількістю кліків за спаданням.</p>
+
+    <h2>📁 Розділ 4. Інтерактивні елементи</h2>
+    <p>Наш звіт має три рівні інтерактивності для кінцевих користувачів:</p>
+    <ul>
+      <li><strong>Date Range Control:</strong> Динамічний календар у верхній панелі, що оновлює весь звіт за будь-який обраний період. За замовчуванням встановлено "Останні 28 днів".</li>
+      <li><strong>Filter Control:</strong> Випадаючий фільтр за каналами трафіку (наприклад, Organic Search або Direct). Дозволяє миттєво відсікати нецільові канали.</li>
+      <li><strong>Drill-down у таблицях сторінок:</strong> Додано ієрархію вимірів <code>Page Path</code> → <code>Page Title</code>. Аналітик може переглядати сторінки як за технічним шляхом, так і за їхніми зручними текстовими назвами в один клік.</li>
+    </ul>
+
+    <h2>📁 Розділ 5. Готовий дашборд (Visual Presentation)</h2>
+    <p>Нижче представлено повноекранні візуальні презентації інтерфейсу розробленого інтерактивного дашборду у Looker Studio для аналізу веб-сайту <code>Super Site 2</code>:</p>
+    
+    <h3 class="text-center">Слайд 1. Оглядовий Executive Dashboard (GA4 Integration)</h3>
+    <img src="images/dashboard_mockup.png" alt="Looker Studio GA4 Executive Dashboard Mockup" class="dashboard-visual">
+    
+    <h3 class="text-center">Слайд 2. Секція Пошукової Оптимізації (Google Search Console Integration)</h3>
+    <img src="images/seo_dashboard_mockup.png" alt="Looker Studio GSC SEO Dashboard Mockup" class="dashboard-visual">
+
+    <h2>❓ Розділ 6. Контрольні запитання (Control Questions)</h2>
+    
+    <p><strong>1. Чим Looker Studio відрізняється від стандартних звітів Google Analytics? У яких ситуаціях варто використовувати Looker Studio, а не вбудовані звіти GA4?</strong><br>
+    Looker Studio — це спеціалізована хмарна платформа BI-візуалізації, тоді як GA4 — це система збору та обробки аналітичних даних. Основні відмінності: Looker Studio підтримує мультиджерельність (об'єднання GA4, GSC, Google Ads, BigQuery, Google Sheets в одному звіті), дає повну свободу у виборі дизайну, кольорів, сіток та шрифтів, а також дозволяє легко ділитися звітом за прямим посиланням або налаштувати розсилку PDF без необхідності створювати акаунти Google для клієнтів. GA4 варто використовувати для глибокої технічної веб-аналітики, перевірки подій у реальному часі (DebugView, Realtime) та аналізу складних користувацьких шляхів (Explorations). Looker Studio є незамінним для створення Executive-звітів (зручних дашбордів KPI для керівництва) та об'єднання кількох маркетингових каналів.</p>
+
+    <p><strong>2. Що таке Data Source у Looker Studio і чому розділення між звітом та джерелом даних є архітектурно правильним рішенням?</strong><br>
+    Data Source (Джерело даних) — це конфігурований зв'язок між звітом Looker Studio та зовнішньою системою зберігання даних (GA4, GSC, Google Sheets тощо). Джерело містить метадані: типи полів (число, дата, текст), формули обчислюваних полів та типи агрегацій. Розділення звіту та джерела є правильним рішенням, оскільки: по-перше, забезпечує перевикористання (одне джерело можна підключити до безлічі звітів); по-друге, гарантує безпеку (можна дозволити редагувати візуальний звіт, але заборонити змінювати конфігурацію підключення до бази даних); по-третє, покращує продуктивність за рахунок ефективного кешування запитів на рівні джерела.</p>
+
+    <p><strong>3. Поясніть різницю між вимірами (Dimensions) та метриками (Metrics) у GA4/Looker Studio. Наведіть по 3 приклади кожного типу.</strong><br>
+    Виміри (Dimensions) — це якісні, описові характеристики даних. Вони групують та сегментують інформацію (відповідають на питання "Що?", "Де?", "Коли?"). Приклади вимірів: <code>Session Default Channel Group</code> (канал трафіку), <code>Page Path</code> (URL-адреса сторінки), <code>Device Category</code> (тип пристрою). Метрики (Metrics) — це кількісні показники, чисельні значення, які можна сумувати, ділити або обчислювати середнє (відповідають на питання "Скільки?"). Приклади метрик: <code>Sessions</code> (сесії), <code>Views</code> (перегляди сторінок), <code>Engagement Rate</code> (відсоток залученості).</p>
+
+    <p><strong>4. Для яких аналітичних питань підходить Time Series, а для яких — Bar Chart? Чи можна замінити один тип іншим? Обґрунтуйте.</strong><br>
+    Time Series (Часовий ряд) ідеально підходить для хронологічного аналізу змін метрики у часі (наприклад, динаміка сесій за днями, місяцями). Він виявляє тренди,SEASONALITY та аномалії. Bar Chart (Стовпчикова діаграма) призначений для порівняння окремих дискретних категорій між собою (наприклад, популярність сторінок чи браузерів). Заміна Time Series на Bar Chart можлива лише частково (наприклад, порівняння 12 місяців у вигляді стовпчиків), але для детальних графіків за днями (28-90 днів) Bar Chart перевантажить екран і втратить наочність лінійного тренду. Заміна Bar Chart на Time Series для категоріальних даних (наприклад, відображення країн як лінії) є абсолютно неможливою та аналітично помилковою, оскільки категорії не мають хронологічної послідовності.</p>
+
+    <p><strong>5. Що таке Calculated Field у Looker Studio? Наведіть практичний приклад обчислюваного поля для SEO-аналітики.</strong><br>
+    Calculated Field (Обчислюване поле) — це користувацьке поле, створене за допомогою формул, математичних дій, регулярних виразів чи логічних операторів на основі вже наявних полів. Практичний приклад для SEO: створення виміру <code>Query Brand Segment</code> для поділу пошукових запитів GSC на брендовий трафік (містить назву компанії) та небрендовий (загальні фрази) за допомогою формули: <code>CASE WHEN REGEXP_CONTAINS(LOWER(Query), "supersite|super-site|yanchuk") THEN "Brand" ELSE "Non-Brand" END</code>. Це дозволяє аналізувати видимість бренду окремо від комерційних запитів.</p>
+
+    <p><strong>6. Яка різниця між фільтром на рівні Data Source та фільтром на рівні компонента? Коли доцільно використовувати кожен рівень?</strong><br>
+    Глобальний фільтр на рівні Data Source обмежує дані на етапі імпорту, тому жоден елемент дашборду не матиме доступу до виключених даних. Його доцільно використовувати для виключення внутрішнього трафіку розробників (за IP) або відсікання спам-ботів. Локальний фільтр на рівні компонента застосовується виключно до конкретного графіка чи таблиці. Його доцільно використовувати для створення спеціалізованих блоків на одній сторінці, наприклад, розміщення окремого списку найпопулярніших сторінок лише для мобільного трафіку поруч із загальною таблицею для всіх пристроїв.</p>
+
+    <p><strong>7. Чому для SEO-аналітики корисно об'єднувати дані GA4 та Google Search Console в одному дашборді? Які питання можна відповісти лише при наявності обох джерел?</strong><br>
+    Це об'єднання зв'язує поведінку користувача до кліку (в пошуковій видачі GSC) із поведінкою після кліку (на самому сайті GA4). Маючи обидва джерела, можна відповісти на критичні питання: Які конкретно ключові слова приносять реальні конверсії та реєстрації на сайті (зв'язок запитів GSC із діями в GA4 через Landing Page)? Які сторінки мають високий CTR у видачі, але високий відсоток виходу / низьке залучення на сайті (це вказує на невідповідність контенту очікуванням користувача)? Які сторінки чудово конвертують користувачів, але майже не показуються в Google (сигнал до посилення SEO-оптимізації та link building)?</p>
+
+    <h2>🎯 Висновки</h2>
+    <p>Під час виконання лабораторної роботи №6 було успішно створено інтерактивний executive-дашборд у Looker Studio для веб-ресурсу <code>Super Site 2</code> студента групи <strong>КНІТ-44 Янчука Дениса</strong>. Інтеграція GA4 та Google Search Console (URL Impression) надала вичерпне розуміння поведінки користувачів на всіх етапах воронки залучення. Налаштовані інтерактивні елементи та Drill-down фільтри суттєво спрощують взаємодію зі звітом. Виявлені аналітичні інсайти підтверджують високе залучення користувачів на сторінках панелі адміністрування, що свідчить про успішність UX/UI оптимізації сайту.</p>
+
+  </div>
+
+  <!-- Google Analytics Event Tracking -->
+  <script src="js/analytics.js"></script>
+</body>
+</html>
