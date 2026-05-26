@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <title>Lab 5 – Google Analytics 4 Implementation Report</title>
+  <style>
+    body {font-family: 'Inter', sans-serif; margin: 2rem; line-height: 1.6; color: #222;}
+    h1, h2 {color: #2c3e50;}
+    pre {background:#f5f5f5; padding:1rem; overflow:auto;}
+    .note {background:#e8f4fd; border-left:4px solid #2b6cb0; padding:0.5rem 1rem; margin:1rem 0;}
+  </style>
+</head>
+<body>
+<h1>Lab 5 – Google Analytics 4 Implementation Report</h1>
+<h2>Goal</h2>
+<p>Integrate Google Analytics 4 (GA4) into <strong>Super Site 2</strong> to capture page‑view metrics and custom user interactions, and verify the implementation.</p>
+<h2>Steps Performed</h2>
+<ol>
+<li>Injected GA4 snippet (<code>gtag.js</code>) into the <code>&lt;head&gt;</code> of all HTML pages using <code>inject_analytics.ps1</code>.</li>
+<li>Created <code>js/analytics.js</code> – centralized event‑tracking module with listeners for:
+<ul>
+<li>CTA button clicks (<code>cta_click</code>)</li>
+<li>Theme toggle (<code>theme_toggle</code>)</li>
+<li>Form submissions (<code>form_submit</code>)</li>
+<li>Social media link clicks (<code>social_click</code>)</li>
+<li>Navigation clicks (<code>nav_click</code>)</li>
+<li>Contact‑intent via <code>mailto:</code> (<code>contact_intent</code>)</li>
+</ul>
+</li>
+<li>Added <code>data-ga-*</code> attributes to relevant elements in the site – already present in the HTML.</li>
+<li>Enabled Debug mode (console logs) to verify events in GA4 DebugView.</li>
+<li>Verified that each page loads the GA4 script and that events are logged in the browser console.</li>
+<li>Prepared documentation – this Markdown report and an accompanying HTML version.</li>
+</ol>
+<h2>Verification</h2>
+<ul>
+<li>Opened each page in Chrome DevTools → <strong>Console</strong> shows <code>GA4 Event:</code> logs for every interaction.</li>
+<li>In GA4 <strong>DebugView</strong> (real‑time) the events appear with correct parameters.</li>
+<li>Page‑view data is successfully sent (network tab shows requests to <code>https://www.google-analytics.com/g/collect</code>).</li>
+</ul>
+<h2>Recommendations</h2>
+<ul>
+<li>Before production deployment, set <code>const GA_DEBUG = false;</code> in <code>js/analytics.js</code>.</li>
+<li>Review the event names and parameters in GA4 UI to ensure they match reporting needs.</li>
+<li>Optionally create custom dimensions/metrics for deeper analysis.</li>
+</ul>
+<div class="note">*Prepared by Denys Yanchuk (Group KNIT‑44) for the Super Site 2 project.*</div>
+</body>
+</html>
