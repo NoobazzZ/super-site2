@@ -1,0 +1,8 @@
+# robots.txt for SuperSite (KNIT-44 Yanchuk Denys)
+User-agent: *
+Disallow: /private/
+Disallow: /drafts/
+Allow: /
+
+# Sitemap Location (GitHub Pages deployment URL)
+Sitemap: https://noobazzz.github.io/super-site2/sitemap.xml

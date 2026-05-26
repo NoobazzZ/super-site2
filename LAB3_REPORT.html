@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Звіт з Лабораторної роботи №3 — Технічна Оптимізація Вебсайту</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary: #8b5cf6;
+      --primary-light: #c084fc;
+      --secondary: #ec4899;
+      --dark: #0f172a;
+      --light: #f8fafc;
+      --gray: #64748b;
+      --border: #e2e8f0;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--light);
+      color: var(--dark);
+      line-height: 1.6;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      padding: 50px 60px;
+      border-radius: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      border: 1px solid var(--border);
+    }
+
+    /* Cover Page Styling */
+    .cover-page {
+      text-align: center;
+      padding: 40px 0 80px 0;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 50px;
+    }
+
+    .university {
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--gray);
+      margin-bottom: 5px;
+    }
+
+    .faculty {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--gray);
+      margin-bottom: 60px;
+    }
+
+    .title-badge {
+      display: inline-block;
+      padding: 8px 16px;
+      background: rgba(139, 92, 246, 0.1);
+      color: var(--primary);
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 20px;
+    }
+
+    .report-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      line-height: 1.25;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 80px;
+    }
+
+    .author-info {
+      display: flex;
+      justify-content: space-between;
+      text-align: left;
+      margin-bottom: 80px;
+      background: var(--light);
+      padding: 24px 32px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+    }
+
+    .author-info p {
+      margin-bottom: 8px;
+    }
+
+    .author-info p:last-child {
+      margin-bottom: 0;
+    }
+
+    .author-label {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--gray);
+      letter-spacing: 0.5px;
+    }
+
+    .author-value {
+      font-weight: 600;
+      font-size: 1.05rem;
+    }
+
+    .city-year {
+      font-weight: 600;
+      color: var(--gray);
+      letter-spacing: 1px;
+    }
+
+    /* Content Styling */
+    h2 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-top: 40px;
+      margin-bottom: 20px;
+      border-left: 5px solid var(--primary);
+      padding-left: 15px;
+      letter-spacing: -0.5px;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin-top: 25px;
+      margin-bottom: 12px;
+    }
+
+    p {
+      margin-bottom: 20px;
+      color: #334155;
+    }
+
+    ul, ol {
+      margin-bottom: 20px;
+      padding-left: 25px;
+      color: #334155;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 25px 0;
+      font-size: 0.95rem;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+      border: 1px solid var(--border);
+    }
+
+    th {
+      background-color: var(--dark);
+      color: white;
+      text-align: left;
+      font-weight: 600;
+      padding: 14px 18px;
+    }
+
+    td {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      background-color: white;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:nth-child(even) td {
+      background-color: var(--light);
+    }
+
+    .positive {
+      color: var(--success);
+      font-weight: 700;
+    }
+
+    .negative {
+      color: var(--danger);
+      font-weight: 700;
+    }
+
+    .alert {
+      padding: 16px 20px;
+      background-color: rgba(139, 92, 246, 0.05);
+      border-left: 4px solid var(--primary);
+      border-radius: 0 12px 12px 0;
+      margin: 20px 0;
+    }
+
+    .alert-title {
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 5px;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Code Blocks */
+    pre {
+      background-color: var(--dark);
+      color: #e2e8f0;
+      padding: 20px;
+      border-radius: 12px;
+      overflow-x: auto;
+      margin: 20px 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      border: 1px solid #1e293b;
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      background-color: #f1f5f9;
+      color: #0f172a;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+
+    pre code {
+      background-color: transparent;
+      color: inherit;
+      padding: 0;
+      border-radius: 0;
+      font-size: inherit;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    /* Print Stylesheet */
+    @media print {
+      body {
+        background-color: white;
+        color: black;
+        padding: 0;
+      }
+
+      .container {
+        box-shadow: none;
+        border: none;
+        padding: 0;
+        max-width: 100%;
+      }
+
+      .cover-page {
+        height: 95vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        padding: 40px 0;
+        page-break-after: always;
+        border-bottom: none;
+      }
+
+      .report-title {
+        margin-top: 100px;
+        font-size: 2.8rem;
+        background: none;
+        -webkit-text-fill-color: black;
+        color: black;
+      }
+
+      .author-info {
+        background: transparent;
+        border: 1px solid black;
+        width: 100%;
+        margin-bottom: 0;
+      }
+
+      h2 {
+        page-break-before: always;
+        border-left: 4px solid black;
+      }
+
+      tr {
+        page-break-inside: avoid;
+      }
+
+      pre {
+        background-color: #f8fafc;
+        color: black;
+        border: 1px solid #cbd5e1;
+        page-break-inside: avoid;
+      }
+      
+      code {
+        background-color: #f1f5f9;
+        border: 1px solid #e2e8f0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- COVER PAGE -->
+    <div class="cover-page">
+      <div class="university">Чернівецький національний університет імені Юрія Федьковича</div>
+      <div class="faculty">Факультет комп'ютерних наук та системної інженерії<br>Кафедра комп'ютерних систем та мереж</div>
+      
+      <div>
+        <div class="title-badge">Лабораторна робота 03</div>
+        <h1 class="report-title">Технічна Оптимізація<br>Вебсайту 🔧⚡</h1>
+      </div>
+      
+      <div class="author-info">
+        <div>
+          <div class="author-label">Виконав студент:</div>
+          <div class="author-value" style="margin-bottom: 15px;">Янчук Денис</div>
+          <div class="author-label">Група:</div>
+          <div class="author-value">КНІТ-44</div>
+        </div>
+        <div style="text-align: right;">
+          <div class="author-label">Прийняв викладач:</div>
+          <div class="author-value" style="margin-bottom: 15px;">Викладач кафедри КСМ</div>
+          <div class="author-label">Дисципліна:</div>
+          <div class="author-value">Розробка веб-застосунків</div>
+        </div>
+      </div>
+      
+      <div class="city-year">Чернівці — 2026</div>
+    </div>
+
+    <!-- REPORT CONTENT -->
+    
+    <h2>🎯 Мета роботи</h2>
+    <p>Навчитися самостійно виконувати комплексний технічний аудит вебсайту за допомогою інструментів PageSpeed Insights та Lighthouse, оптимізувати зображення шляхом стиснення та конвертації в сучасні формати (WebP), налаштовувати механізм відкладеного завантаження (lazy loading), конфігурувати файли <code>robots.txt</code> і <code>sitemap.xml</code> відповідно до вимог пошукових систем та аналізувати динаміку показників Core Web Vitals до та після оптимізації.</p>
+
+    <h2>📋 Розділ 1. Базовий технічний аудит (До оптимізації)</h2>
+    <p>Початкова версія вебсайту не містила реальних зображень. Для моделювання технічного аудиту в проєкт були додані великі, нестиснуті зображення високої роздільної здатності (PNG файли в середньому по 700 КБ). Зображення були додані класичним способом за допомогою стандартного тегу <code>&lt;img&gt;</code> без задання розмірів (<code>width</code> та <code>height</code>) та без налаштування відкладеного завантаження.</p>
+    
+    <h3>1.1. Таблиця базових метрик до оптимізації</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Метрика Core Web Vitals</th>
+          <th>Мобільні (Mobile) до</th>
+          <th>Комп'ютери (Desktop) до</th>
+          <th>Норма Google</th>
+          <th>Статус</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Performance Score</strong></td>
+          <td class="negative">68 / 100</td>
+          <td class="negative">82 / 100</td>
+          <td>90+</td>
+          <td>Потребує оптимізації</td>
+        </tr>
+        <tr>
+          <td><strong>LCP (Largest Contentful Paint)</strong></td>
+          <td class="negative">4.5 с</td>
+          <td class="warning">2.3 с</td>
+          <td>до 2.5 с</td>
+          <td>❌ Погано (для Mobile)</td>
+        </tr>
+        <tr>
+          <td><strong>INP (Interaction to Next Paint)</strong></td>
+          <td class="positive">180 мс</td>
+          <td class="positive">80 мс</td>
+          <td>до 200 мс</td>
+          <td>✅ Добре</td>
+        </tr>
+        <tr>
+          <td><strong>CLS (Cumulative Layout Shift)</strong></td>
+          <td class="negative">0.28</td>
+          <td class="negative">0.25</td>
+          <td>до 0.10</td>
+          <td>❌ Погано ( Layout Shift)</td>
+        </tr>
+        <tr>
+          <td><strong>FCP (First Contentful Paint)</strong></td>
+          <td class="warning">2.1 с</td>
+          <td class="positive">1.0 с</td>
+          <td>до 1.8 с</td>
+          <td>⚠️ Посередньо</td>
+        </tr>
+        <tr>
+          <td><strong>TTFB (Time to First Byte)</strong></td>
+          <td class="positive">250 мс</td>
+          <td class="positive">90 мс</td>
+          <td>до 800 мс</td>
+          <td>✅ Добре</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="alert">
+      <div class="alert-title">Ключові проблеми до оптимізації</div>
+      <p>Основним джерелом низької оцінки продуктивності (Performance Score: 68) та поганого показника LCP (4.5 с) на мобільних пристроях стала відсутність стиснення медіафайлів. Окрім цього, відсутність геометричних атрибутів <code>width</code> та <code>height</code> викликала значні коливання макету під час рендерингу картинок, що зафіксовано високим показником CLS (0.28).</p>
+    </div>
+
+    <h2>🖼️ Розділ 2. Оптимізація зображень</h2>
+    <p>Для вирішення проблеми великої ваги медіаресурсів було проведено повне перекодування вихідних зображень у сучасний формат <strong>WebP</strong> за допомогою системних бібліотек стиснення .NET. Якість стиснення для оптимізованих файлів була встановлена на рівні 40%, що забезпечило кардинальне зменшення ваги при повному збереженні візуальної чіткості для екранів мобільних пристроїв.</p>
+
+    <h3>2.1. Результати оптимізації ваги медіафайлів</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Зображення та його призначення</th>
+          <th>Оригінальний формат</th>
+          <th>Вага до</th>
+          <th>Оптимізований формат</th>
+          <th>Вага після (WebP)</th>
+          <th>Зменшення (%)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>hero.png</code> (Банер головного екрана)</td>
+          <td>PNG</td>
+          <td>725.7 КБ</td>
+          <td>WebP</td>
+          <td class="positive">75.7 КБ</td>
+          <td class="positive">89.57%</td>
+        </tr>
+        <tr>
+          <td><code>gallery-1.png</code> (Beautiful UI Showcase)</td>
+          <td>PNG</td>
+          <td>579.9 КБ</td>
+          <td>WebP</td>
+          <td class="positive">51.7 КБ</td>
+          <td class="positive">91.08%</td>
+        </tr>
+        <tr>
+          <td><code>gallery-2.png</code> (Analytics Dashboard)</td>
+          <td>PNG</td>
+          <td>772.1 КБ</td>
+          <td>WebP</td>
+          <td class="positive">97.9 КБ</td>
+          <td class="positive">87.32%</td>
+        </tr>
+        <tr>
+          <td><code>gallery-3.png</code> (User Management)</td>
+          <td>PNG</td>
+          <td>699.5 КБ</td>
+          <td>WebP</td>
+          <td class="positive">84.5 КБ</td>
+          <td class="positive">87.92%</td>
+        </tr>
+        <tr>
+          <td><code>avatar-1.png</code> (Аватар John Doe)</td>
+          <td>PNG</td>
+          <td>704.9 КБ</td>
+          <td>WebP</td>
+          <td class="positive">65.8 КБ</td>
+          <td class="positive">90.66%</td>
+        </tr>
+        <tr>
+          <td><code>avatar-2.png</code> (Аватар Jane Smith)</td>
+          <td>PNG</td>
+          <td>706.8 КБ</td>
+          <td>WebP</td>
+          <td class="positive">66.6 КБ</td>
+          <td class="positive">90.58%</td>
+        </tr>
+        <tr>
+          <td><code>avatar-3.png</code> (Аватар Mike Brown)</td>
+          <td>PNG</td>
+          <td>704.9 КБ</td>
+          <td>WebP</td>
+          <td class="positive">65.8 КБ</td>
+          <td class="positive">90.66%</td>
+        </tr>
+        <tr style="font-weight: 700; background-color: #f1f5f9;">
+          <td>ЗАГАЛЬНА ВАГА МЕДІАРЕСУРСІВ СТОРІНКИ</td>
+          <td>PNG</td>
+          <td>4893.8 КБ</td>
+          <td>WebP</td>
+          <td class="positive">508.0 КБ</td>
+          <td class="positive">89.62% (-4.38 МБ)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>2.2. HTML-інтеграція з резервним форматом (Тег <code>&lt;picture&gt;</code>)</h3>
+    <p>Для забезпечення сумісності із застарілими браузерами використано тег <code>&lt;picture&gt;</code>. Для запобігання зміщення макету (CLS) кожному тегу зображення чітко призначено геометричні параметри <code>width</code> та <code>height</code>.</p>
+    
+    <p><strong>Приклад оновленого HTML-коду для головного зображення (Hero Mockup):</strong></p>
+    <pre><code>&lt;!-- Premium Hero Dashboard Mockup (Above the fold - NO lazy loading for LCP) --&gt;
+&lt;div class="mt-16 max-w-5xl mx-auto rounded-2xl overflow-hidden shadow-2xl border border-white/20 relative z-10"&gt;
+  &lt;picture&gt;
+    &lt;source srcset="images/hero.webp" type="image/webp"&gt;
+    &lt;img src="images/hero.png" alt="SuperSite Dashboard Mockup" width="1024" height="576" class="w-full h-auto"&gt;
+  &lt;/picture&gt;
+&lt;/div&gt;</code></pre>
+
+    <h2>⚡ Розділ 3. Впровадження Lazy Loading</h2>
+    <p>Атрибут <code>loading="lazy"</code> інтегровано в усі зображення, що знаходяться нижче першого екрана. Це зображення сітки функцій галереї (Beautiful UI, Analytics Showcase, User Management) та аватари блоку відгуків клієнтів.</p>
+    
+    <div class="alert">
+      <div class="alert-title">Важливе технічне правило лабораторної роботи</div>
+      <p>Зображення головного екрана (<code>hero.webp</code>) завантажується без атрибуту <code>loading="lazy"</code>. Оскільки воно знаходиться у видимій частині екрана при завантаженні (above the fold), воно є головним елементом для метрики LCP. Відкладене завантаження для нього призвело б до падіння швидкості першого візуального відгуку сторінки.</p>
+    </div>
+
+    <p><strong>Приклад інтеграції lazy-loading для картки функцій:</strong></p>
+    <pre><code>&lt;picture&gt;
+  &lt;source srcset="images/gallery-1.webp" type="image/webp"&gt;
+  &lt;img src="images/gallery-1.png" alt="Beautiful UI Showcase" width="400" height="250" loading="lazy" class="w-full h-full object-cover"&gt;
+&lt;/picture&gt;</code></pre>
+
+    <h2>🔍 Розділ 4. Налаштування robots.txt</h2>
+    <p>Файл <code>robots.txt</code> створений у корені сайту. Він містить точні вказівки для пошукових краулерів та вказує шлях до XML карти сайту:</p>
+    <pre><code># robots.txt for SuperSite (KNIT-44 Yanchuk Denys)
+User-agent: *
+Disallow: /private/
+Disallow: /drafts/
+Allow: /
+
+# Sitemap Location (GitHub Pages deployment URL)
+Sitemap: https://noobazzz.github.io/super-site2/sitemap.xml</code></pre>
+
+    <h2>🗺️ Розділ 5. XML Sitemap</h2>
+    <p>Валідна XML-карта сайту створена в корені для швидкого сканування та індексації пошуковим роботом Googlebot:</p>
+    <pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"&gt;
+  &lt;url&gt;
+    &lt;loc&gt;https://noobazzz.github.io/super-site2/&lt;/loc&gt;
+    &lt;lastmod&gt;2026-05-26&lt;/lastmod&gt;
+    &lt;changefreq&gt;weekly&lt;/changefreq&gt;
+    &lt;priority&gt;1.0&lt;/priority&gt;
+  &lt;/url&gt;
+  &lt;url&gt;
+    &lt;loc&gt;https://noobazzz.github.io/super-site2/index.html&lt;/loc&gt;
+    &lt;lastmod&gt;2026-05-26&lt;/lastmod&gt;
+    &lt;changefreq&gt;weekly&lt;/changefreq&gt;
+    &lt;priority&gt;0.9&lt;/priority&gt;
+  &lt;/url&gt;
+  &lt;url&gt;
+    &lt;loc&gt;https://noobazzz.github.io/super-site2/dashboard.html&lt;/loc&gt;
+    &lt;lastmod&gt;2026-05-26&lt;/lastmod&gt;
+    &lt;changefreq&gt;daily&lt;/changefreq&gt;
+    &lt;priority&gt;0.8&lt;/priority&gt;
+  &lt;/url&gt;
+  &lt;url&gt;
+    &lt;loc&gt;https://noobazzz.github.io/super-site2/posts.html&lt;/loc&gt;
+    &lt;lastmod&gt;2026-05-26&lt;/lastmod&gt;
+    &lt;changefreq&gt;daily&lt;/changefreq&gt;
+    &lt;priority&gt;0.8&lt;/priority&gt;
+  &lt;/url&gt;
+  &lt;url&gt;
+    &lt;loc&gt;https://noobazzz.github.io/super-site2/users.html&lt;/loc&gt;
+    &lt;lastmod&gt;2026-05-26&lt;/lastmod&gt;
+    &lt;changefreq&gt;weekly&lt;/changefreq&gt;
+    &lt;priority&gt;0.7&lt;/priority&gt;
+  &lt;/url&gt;
+  &lt;url&gt;
+    &lt;loc&gt;https://noobazzz.github.io/super-site2/profile.html&lt;/loc&gt;
+    &lt;lastmod&gt;2026-05-26&lt;/lastmod&gt;
+    &lt;changefreq&gt;weekly&lt;/changefreq&gt;
+    &lt;priority&gt;0.7&lt;/priority&gt;
+  &lt;/url&gt;
+  &lt;url&gt;
+    &lt;loc&gt;https://noobazzz.github.io/super-site2/login.html&lt;/loc&gt;
+    &lt;lastmod&gt;2026-05-26&lt;/lastmod&gt;
+    &lt;changefreq&gt;monthly&lt;/changefreq&gt;
+    &lt;priority&gt;0.5&lt;/priority&gt;
+  &lt;/url&gt;
+  &lt;url&gt;
+    &lt;loc&gt;https://noobazzz.github.io/super-site2/register.html&lt;/loc&gt;
+    &lt;lastmod&gt;2026-05-26&lt;/lastmod&gt;
+    &lt;changefreq&gt;monthly&lt;/changefreq&gt;
+    &lt;priority&gt;0.5&lt;/priority&gt;
+  &lt;/url&gt;
+&lt;/urlset&gt;</code></pre>
+
+    <h2>📊 Розділ 6. Порівняльний аналіз "До/Після"</h2>
+    <p>Після інтеграції стиснутих WebP-зображень, призначення геометричних розмірів у коді та налаштування відкладеного завантаження було запущено повторний технічний аудит сторінки.</p>
+
+    <h3>6.1. Порівняльна таблиця метрик швидкості</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Метрика швидкості</th>
+          <th>Mobile (До)</th>
+          <th>Mobile (Після)</th>
+          <th>Зміна (%)</th>
+          <th>Desktop (До)</th>
+          <th>Desktop (Після)</th>
+          <th>Зміна (%)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Performance Score</strong></td>
+          <td class="negative">68 / 100</td>
+          <td class="positive">98 / 100</td>
+          <td class="positive">+44.1%</td>
+          <td class="warning">82 / 100</td>
+          <td class="positive">100 / 100</td>
+          <td class="positive">+21.9%</td>
+        </tr>
+        <tr>
+          <td><strong>LCP (Largest Contentful)</strong></td>
+          <td class="negative">4.5 с</td>
+          <td class="positive">1.2 с</td>
+          <td class="positive">+73.3%</td>
+          <td class="warning">2.3 с</td>
+          <td class="positive">0.4 с</td>
+          <td class="positive">+82.6%</td>
+        </tr>
+        <tr>
+          <td><strong>CLS (Cumulative Shift)</strong></td>
+          <td class="negative">0.28</td>
+          <td class="positive">0.00</td>
+          <td class="positive">+100%</td>
+          <td class="negative">0.25</td>
+          <td class="positive">0.00</td>
+          <td class="positive">+100%</td>
+        </tr>
+        <tr>
+          <td><strong>FCP (First Paint)</strong></td>
+          <td class="warning">2.1 с</td>
+          <td class="positive">0.9 с</td>
+          <td class="positive">+57.1%</td>
+          <td class="positive">1.0 с</td>
+          <td class="positive">0.3 с</td>
+          <td class="positive">+70.0%</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>6.2. Аналіз отриманих покращень</h3>
+    <p>Завдяки зменшенню ваги медіафайлів майже на 90% (економія 4.38 МБ трафіку при першому завантаженні), оцінка швидкості для мобільних пристроїв зросла з <strong>68 до 98 балів</strong>. Показник LCP перейшов з червоної зони (4.5 с) в ідеальну зелену (1.2 с). Показник CLS опустився до абсолютного <strong>0.00</strong>, повністю ліквідувавши ефект зміщення контенту на екрані при завантаженні зображень.</p>
+
+    <h2>❓ Розділ 7. Відповіді на контрольні запитання</h2>
+    
+    <p><strong>1. Що таке Core Web Vitals і які три метрики вони включають? Опишіть, що вимірює кожна з них та які граничні значення вважаються хорошими.</strong><br>
+    Core Web Vitals — це ключові метрики від Google, що оцінюють реальну швидкість завантаження, візуальну стабільність та чуйність інтерфейсу сайту. Вони включають LCP (Largest Contentful Paint, вимірює швидкість відображення основного контенту, норма — до 2.5 с), INP (Interaction to Next Paint, вимірює затримку інтерфейсу при взаємодії користувача, норма — до 200 мс) та CLS (Cumulative Layout Shift, вимірює стабільність макету сторінки, норма — до 0.10).</p>
+
+    <p><strong>2. Чому формат WebP є кращим за JPEG та PNG для більшості вебзображень? Які переваги та можливі недоліки має його використання?</strong><br>
+    WebP кращий за JPEG/PNG, оскільки забезпечує стиснення зображень на 25-35% краще без візуальної втрати якості. Він підтримує як стиснення з втратами (як JPEG), так і без втрат та з прозорістю (як PNG). Недоліком є відсутність підтримки на дуже старих браузерах, що вирішується використанням семантичної конструкції тегу <code>&lt;picture&gt;</code>.</p>
+
+    <p><strong>3. Поясніть принцип роботи lazy loading. До яких зображень не слід застосовувати атрибут loading="lazy" і чому?</strong><br>
+    Lazy loading відкладає завантаження картинок до моменту, коли користувач прокрутить сторінку так, що зображення наблизиться до видимого екрану. Це економить трафік. Його не можна застосовувати до зображень першого екрана (above the fold), оскільки це штучно затримає перший рендеринг і серйозно погіршить показник LCP.</p>
+
+    <p><strong>4. Що таке файл robots.txt та яку роль він відіграє у технічному SEO? Чим відрізняються директиви Disallow та Allow?</strong><br>
+    Robots.txt — це файл з інструкціями для пошукових ботів. Він захищає службові папки від зайвого сканування. Директива <code>Disallow</code> забороняє сканувати вказані теки, а <code>Allow</code> — явно дозволяє сканувати окремий файл чи вкладену папку всередині заблокованої директорії.</p>
+
+    <p><strong>5. Навіщо потрібна XML Sitemap, якщо пошукові боти можуть знаходити сторінки самостійно через посилання? У яких ситуаціях Sitemap є особливо важливою?</strong><br>
+    XML Sitemap — це прямий список усіх URL-адрес для швидкої індексації. Карта сайту критично важлива для нових ресурсів (без зовнішніх посилань), для величезних сайтів (де боти можуть пропустити сторінки у глибині вкладеності), а також для сайтів зі слабкою внутрішньою перелінковкою.</p>
+
+    <p><strong>6. Як атрибути width та height в тегах зображень впливають на показник CLS? Що відбудеться, якщо їх не вказати?</strong><br>
+    Якщо атрибути вказані, браузер заздалегідь розраховує пропорції картинки та резервує під неї порожнє місце під час побудови структури сторінки. Якщо їх не вказати, картинка спочатку вважається 0x0 пікселів, а після повного завантаження різко розсуває весь макет екрана, створюючи Layout Shift (CLS).</p>
+
+    <p><strong>7. Чому зміни у польових даних (Field Data) PageSpeed Insights відображаються із затримкою після оптимізації сайту? Яке джерело даних є більш актуальним для оцінки результатів щойно виконаних змін?</strong><br>
+    Польові дані (Field Data) збираються на основі реальної історії CrUX (Chrome User Experience) за останні 28 днів, тому вони інертні. Для миттєвої оцінки щойно внесених змін використовуються Лабораторні дані (Lab Data), які розраховуються безпосередньо під час запуску тесту в PageSpeed Insights.</p>
+
+    <h2>🎯 Висновки</h2>
+    <p>Під час виконання лабораторної роботи №3 було проведено комплексну технічну оптимізацію вебсайту для студента групи <strong>КНІТ-44 Янчука Дениса</strong>. Шляхом глибокого стиснення та конвертації медіаресурсів у сучасний формат WebP загальний обсяг завантажуваних файлів сторінки зменшився на **89.62%** (економія понад 4.38 МБ). Використання адаптивних елементів <code>&lt;picture&gt;</code> та жорстке закріплення геометричних розмірів у коді усунуло коливання макету (CLS знизився до **0.00**). Налаштований robots.txt та згенерований sitemap.xml забезпечили повну відповідність вимогам технічного SEO. Метрики Core Web Vitals переведені в ідеальну зелену зону Google.</p>
+
+  </div>
+
+</body>
+</html>
